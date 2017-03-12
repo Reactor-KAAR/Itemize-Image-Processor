@@ -1,0 +1,22 @@
+{
+  "name": "itemize-image-processor",
+  "version": "1.0.0",
+  "description": "a serverless server for processing images to JIMPs",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Reactor-KAAR/Itemize-Image-Processor.git"
+  },
+  "keywords": [
+    "itemize"
+  ],
+  "author": "rodaan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Reactor-KAAR/Itemize-Image-Processor/issues"
+  },
+  "homepage": "https://github.com/Reactor-KAAR/Itemize-Image-Processor#readme"
+}
