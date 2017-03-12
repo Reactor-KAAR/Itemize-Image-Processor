@@ -13,6 +13,11 @@
 
 service: itemize-image-processor
 
+custom:
+  imgBucket: itemize-image-bucket
+  jimpBucket: itemize-jimp-bucket
+  
+
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
@@ -21,45 +26,26 @@ provider:
   name: aws
   runtime: nodejs4.3
   profile: serverless
-
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
-
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
-# you can add packaging information here
-#package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.js
-#    - exclude-me-dir/**
+  stage: dev
+  region: us-west-1
+  environment:
+    IMGBUCKET: ${self:custom.imgBucket}
+    JIMPBUCKET: ${self:custom.jimpBucket}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - s3:*
+      Resource: "*"
 
 functions:
-  hello:
-    handler: handler.hello
-  shit:
-    handler: handler.shit
+  createAndSaveJimp:
+    handler: handler.createAndSaveJimp
+    events:
+      - s3:
+          bucket: ${self:custom.imgBucket}
+          event: s3:ObjectCreated:*
+  test:
+    handler: handler.test
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

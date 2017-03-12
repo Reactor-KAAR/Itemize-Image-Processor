@@ -5,16 +5,16 @@
     "ServerlessDeploymentBucket": {
       "Type": "AWS::S3::Bucket"
     },
-    "HelloLogGroup": {
+    "CreateAndSaveJimpLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/itemize-image-processor-dev-hello"
+        "LogGroupName": "/aws/lambda/itemize-image-processor-dev-createAndSaveJimp"
       }
     },
-    "ShitLogGroup": {
+    "TestLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/itemize-image-processor-dev-shit"
+        "LogGroupName": "/aws/lambda/itemize-image-processor-dev-test"
       }
     },
     "IamRoleLambdaExecution": {
@@ -59,13 +59,13 @@
                   "Resource": [
                     {
                       "Fn::GetAtt": [
-                        "HelloLogGroup",
+                        "CreateAndSaveJimpLogGroup",
                         "Arn"
                       ]
                     },
                     {
                       "Fn::GetAtt": [
-                        "ShitLogGroup",
+                        "TestLogGroup",
                         "Arn"
                       ]
                     }
@@ -83,7 +83,7 @@
                         [
                           {
                             "Fn::GetAtt": [
-                              "HelloLogGroup",
+                              "CreateAndSaveJimpLogGroup",
                               "Arn"
                             ]
                           },
@@ -97,7 +97,7 @@
                         [
                           {
                             "Fn::GetAtt": [
-                              "ShitLogGroup",
+                              "TestLogGroup",
                               "Arn"
                             ]
                           },
@@ -106,6 +106,13 @@
                       ]
                     }
                   ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:*"
+                  ],
+                  "Resource": "*"
                 }
               ]
             }
@@ -118,24 +125,24 @@
             [
               "itemize-image-processor",
               "dev",
-              "us-east-1",
+              "us-west-1",
               "lambdaRole"
             ]
           ]
         }
       }
     },
-    "HelloLambdaFunction": {
+    "CreateAndSaveJimpLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/itemize-image-processor/dev/1489283037516-2017-03-12T01:43:57.516Z/itemize-image-processor.zip"
+          "S3Key": "serverless/itemize-image-processor/dev/1489300128722-2017-03-12T06:28:48.722Z/itemize-image-processor.zip"
         },
-        "FunctionName": "itemize-image-processor-dev-hello",
-        "Handler": "handler.hello",
+        "FunctionName": "itemize-image-processor-dev-createAndSaveJimp",
+        "Handler": "handler.createAndSaveJimp",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -144,33 +151,39 @@
           ]
         },
         "Runtime": "nodejs4.3",
-        "Timeout": 6
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "IMGBUCKET": "itemize-image-bucket",
+            "JIMPBUCKET": "itemize-jimp-bucket"
+          }
+        }
       },
       "DependsOn": [
         "IamRoleLambdaExecution"
       ]
     },
-    "HelloLambdaVersioneDLxPCbjgAdTa9BxPlY3mMxmGnKoC3CfSh499GZyE": {
+    "CreateAndSaveJimpLambdaVersion61w8bRM1kSYWe5cnWjsrgT4BZptUivpEsvEw0K5odZQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "HelloLambdaFunction"
+          "Ref": "CreateAndSaveJimpLambdaFunction"
         },
-        "CodeSha256": "e/DLxPCb+jgAdTa9BxPlY3mMxmGnKoC3CfSh499GZyE="
+        "CodeSha256": "61w8bRM1kSYWe5cnWjsrgT4BZptUivpEsvEw0K5odZQ="
       }
     },
-    "ShitLambdaFunction": {
+    "TestLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/itemize-image-processor/dev/1489283037516-2017-03-12T01:43:57.516Z/itemize-image-processor.zip"
+          "S3Key": "serverless/itemize-image-processor/dev/1489300128722-2017-03-12T06:28:48.722Z/itemize-image-processor.zip"
         },
-        "FunctionName": "itemize-image-processor-dev-shit",
-        "Handler": "handler.shit",
+        "FunctionName": "itemize-image-processor-dev-test",
+        "Handler": "handler.test",
         "MemorySize": 1024,
         "Role": {
           "Fn::GetAtt": [
@@ -179,20 +192,66 @@
           ]
         },
         "Runtime": "nodejs4.3",
-        "Timeout": 6
+        "Timeout": 6,
+        "Environment": {
+          "Variables": {
+            "IMGBUCKET": "itemize-image-bucket",
+            "JIMPBUCKET": "itemize-jimp-bucket"
+          }
+        }
       },
       "DependsOn": [
         "IamRoleLambdaExecution"
       ]
     },
-    "ShitLambdaVersioneDLxPCbjgAdTa9BxPlY3mMxmGnKoC3CfSh499GZyE": {
+    "TestLambdaVersion61w8bRM1kSYWe5cnWjsrgT4BZptUivpEsvEw0K5odZQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "ShitLambdaFunction"
+          "Ref": "TestLambdaFunction"
         },
-        "CodeSha256": "e/DLxPCb+jgAdTa9BxPlY3mMxmGnKoC3CfSh499GZyE="
+        "CodeSha256": "61w8bRM1kSYWe5cnWjsrgT4BZptUivpEsvEw0K5odZQ="
+      }
+    },
+    "S3BucketItemizeimagebucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "itemize-image-bucket",
+        "NotificationConfiguration": {
+          "LambdaConfigurations": [
+            {
+              "Event": "s3:ObjectCreated:*",
+              "Function": {
+                "Fn::GetAtt": [
+                  "CreateAndSaveJimpLambdaFunction",
+                  "Arn"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "CreateAndSaveJimpLambdaPermissionItemizeimagebucketS3": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "CreateAndSaveJimpLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "s3.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:s3:::itemize-image-bucket"
+            ]
+          ]
+        }
       }
     }
   },
@@ -202,16 +261,16 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "HelloLambdaFunctionQualifiedArn": {
+    "CreateAndSaveJimpLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HelloLambdaVersioneDLxPCbjgAdTa9BxPlY3mMxmGnKoC3CfSh499GZyE"
+        "Ref": "CreateAndSaveJimpLambdaVersion61w8bRM1kSYWe5cnWjsrgT4BZptUivpEsvEw0K5odZQ"
       }
     },
-    "ShitLambdaFunctionQualifiedArn": {
+    "TestLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ShitLambdaVersioneDLxPCbjgAdTa9BxPlY3mMxmGnKoC3CfSh499GZyE"
+        "Ref": "TestLambdaVersion61w8bRM1kSYWe5cnWjsrgT4BZptUivpEsvEw0K5odZQ"
       }
     }
   }

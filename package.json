@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/Reactor-KAAR/Itemize-Image-Processor/issues"
   },
-  "homepage": "https://github.com/Reactor-KAAR/Itemize-Image-Processor#readme"
+  "homepage": "https://github.com/Reactor-KAAR/Itemize-Image-Processor#readme",
+  "dependencies": {
+    "aws-sdk": "^2.27.0",
+    "jimp": "^0.2.27",
+    "node-fetch": "^1.6.3"
+  }
 }
